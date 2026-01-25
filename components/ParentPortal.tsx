@@ -123,37 +123,40 @@ const ParentPortal: React.FC<ParentPortalProps> = ({ childrenData, onLogout }) =
             <form onSubmit={handleSaveSettings} className="ghibli-card p-10 bg-white border-0 space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm font-bold text-stone-500 ml-1">
+                  <Label htmlFor="firstName" className="flex items-center gap-2 text-sm font-bold text-stone-500 ml-1">
                     <User className="w-4 h-4" /> First Name
-                  </label>
-                  <input
+                  </Label>
+                  <Input
+                    id="firstName"
                     type="text"
                     disabled
-                    className="ghibli-input w-full bg-stone-50 text-stone-400 cursor-not-allowed border-stone-100"
+                    className="ghibli-input w-full bg-stone-50 text-stone-400 cursor-not-allowed border-stone-100 h-12"
                     value={myChild.firstName}
                   />
                   <p className="text-[10px] text-stone-400 italic ml-1">* Contact admin to change name</p>
                 </div>
                 <div className="space-y-2">
-                  <label className="flex items-center gap-2 text-sm font-bold text-stone-500 ml-1">
+                  <Label htmlFor="lastName" className="flex items-center gap-2 text-sm font-bold text-stone-500 ml-1">
                     <User className="w-4 h-4" /> Last Name
-                  </label>
-                  <input
+                  </Label>
+                  <Input
+                    id="lastName"
                     type="text"
                     disabled
-                    className="ghibli-input w-full bg-stone-50 text-stone-400 cursor-not-allowed border-stone-100"
+                    className="ghibli-input w-full bg-stone-50 text-stone-400 cursor-not-allowed border-stone-100 h-12"
                     value={myChild.lastName}
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="flex items-center gap-2 text-sm font-bold text-stone-600 ml-1">
+                <Label htmlFor="studentId" className="flex items-center gap-2 text-sm font-bold text-stone-600 ml-1">
                   <Hash className="w-4 h-4" /> Student ID
-                </label>
-                <input
+                </Label>
+                <Input
+                  id="studentId"
                   type="text"
-                  className="ghibli-input w-full"
+                  className="ghibli-input w-full h-12"
                   value={myChild.id}
                   onChange={e => setMyChild({...myChild, id: e.target.value})}
                   placeholder="ID Number"
@@ -161,12 +164,13 @@ const ParentPortal: React.FC<ParentPortalProps> = ({ childrenData, onLogout }) =
               </div>
 
               <div className="space-y-2">
-                <label className="flex items-center gap-2 text-sm font-bold text-stone-600 ml-1">
+                <Label htmlFor="guardianEmail" className="flex items-center gap-2 text-sm font-bold text-stone-600 ml-1">
                   <Mail className="w-4 h-4" /> Guardian Email
-                </label>
-                <input
+                </Label>
+                <Input
+                  id="guardianEmail"
                   type="email"
-                  className="ghibli-input w-full"
+                  className="ghibli-input w-full h-12"
                   value={myChild.email || ''}
                   onChange={e => setMyChild({...myChild, email: e.target.value})}
                   placeholder="parent@example.com"
@@ -174,12 +178,13 @@ const ParentPortal: React.FC<ParentPortalProps> = ({ childrenData, onLogout }) =
               </div>
 
               <div className="space-y-2">
-                <label className="flex items-center gap-2 text-sm font-bold text-stone-600 ml-1">
+                <Label htmlFor="guardianPhone" className="flex items-center gap-2 text-sm font-bold text-stone-600 ml-1">
                   <Phone className="w-4 h-4" /> Guardian Phone
-                </label>
-                <input
+                </Label>
+                <Input
+                  id="guardianPhone"
                   type="tel"
-                  className="ghibli-input w-full"
+                  className="ghibli-input w-full h-12"
                   value={myChild.phoneNumber || ''}
                   onChange={e => setMyChild({...myChild, phoneNumber: e.target.value})}
                   placeholder="(555) 000-0000"
