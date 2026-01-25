@@ -8,6 +8,8 @@ import { MOCK_ACTIVITIES, MOCK_PROGRESS } from '../constants';
 import { Child } from '../types';
 import { Home, Activity, Image, BarChart3, MessageCircle, ArrowRight, Heart, Save, User, Mail, Phone, Hash, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface ParentPortalProps {
   childrenData: Child[];
