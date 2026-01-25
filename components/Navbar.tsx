@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { Baby, LogIn } from 'lucide-react';
-import Button from './ui/Button';
+import { Button } from '@/components/ui/button';
 
 interface NavbarProps {
   onSelect: (view: 'admin' | 'parent' | 'login') => void;
