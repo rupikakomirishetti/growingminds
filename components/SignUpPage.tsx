@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Mail, User, Lock } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface SignUpPageProps {
   onSignUpSuccess: () => void;
@@ -38,9 +41,9 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUpSuccess, onBack, onSwit
        <div className="absolute bottom-[-10%] left-[-5%] w-80 h-80 bg-emerald-100/50 rounded-full blur-3xl"></div>
 
        <div className="max-w-md w-full relative z-10 animate-fade-in">
-          <button onClick={onBack} className="mb-6 flex items-center gap-2 text-stone-500 hover:text-stone-700 font-bold transition-colors">
+          <Button variant="ghost" onClick={onBack} className="mb-6 flex items-center gap-2 text-stone-500 hover:text-stone-700 font-bold">
             <ArrowLeft className="w-5 h-5" /> Back to Village
-          </button>
+          </Button>
 
           <div className="ghibli-card p-8 bg-white/90 shadow-xl border border-white">
              <div className="text-center mb-8">
@@ -51,13 +54,14 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUpSuccess, onBack, onSwit
              <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="block text-sm font-bold text-stone-600 ml-1">First Name</label>
+                    <Label htmlFor="firstName" className="text-sm font-bold text-stone-600 ml-1">First Name</Label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
-                      <input 
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 z-10" />
+                      <Input
+                        id="firstName"
                         type="text" 
                         required 
-                        className="ghibli-input w-full pl-10" 
+                        className="ghibli-input w-full pl-10 h-12" 
                         placeholder="e.g. Mei"
                         value={formData.firstName}
                         onChange={e => setFormData({...formData, firstName: e.target.value})}
@@ -65,11 +69,12 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUpSuccess, onBack, onSwit
                     </div>
                   </div>
                    <div className="space-y-2">
-                    <label className="block text-sm font-bold text-stone-600 ml-1">Last Name</label>
-                     <input 
+                    <Label htmlFor="lastName" className="text-sm font-bold text-stone-600 ml-1">Last Name</Label>
+                     <Input
+                        id="lastName"
                         type="text" 
                         required 
-                        className="ghibli-input w-full" 
+                        className="ghibli-input w-full h-12" 
                         placeholder="Kusakabe"
                         value={formData.lastName}
                         onChange={e => setFormData({...formData, lastName: e.target.value})}
@@ -78,13 +83,14 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUpSuccess, onBack, onSwit
                 </div>
 
                 <div className="space-y-2">
-                    <label className="block text-sm font-bold text-stone-600 ml-1">Email Address</label>
+                    <Label htmlFor="email" className="text-sm font-bold text-stone-600 ml-1">Email Address</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
-                      <input 
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 z-10" />
+                      <Input
+                        id="email"
                         type="email" 
                         required 
-                        className="ghibli-input w-full pl-10" 
+                        className="ghibli-input w-full pl-10 h-12" 
                         placeholder="parent@example.com"
                         value={formData.email}
                         onChange={e => setFormData({...formData, email: e.target.value})}
@@ -93,13 +99,14 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUpSuccess, onBack, onSwit
                 </div>
 
                 <div className="space-y-2">
-                    <label className="block text-sm font-bold text-stone-600 ml-1">Password</label>
+                    <Label htmlFor="password" className="text-sm font-bold text-stone-600 ml-1">Password</Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
-                      <input 
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 z-10" />
+                      <Input
+                        id="password"
                         type="password" 
                         required 
-                        className="ghibli-input w-full pl-10" 
+                        className="ghibli-input w-full pl-10 h-12" 
                         placeholder="••••••••"
                         value={formData.password}
                         onChange={e => setFormData({...formData, password: e.target.value})}
@@ -107,17 +114,17 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUpSuccess, onBack, onSwit
                     </div>
                 </div>
 
-                <button type="submit" className="w-full ghibli-btn bg-emerald-500 text-white py-3.5 font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-600 hover:shadow-emerald-300 transition-all transform active:scale-95 mt-4">
+                <Button type="submit" className="w-full bg-emerald-500 text-white py-3.5 font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-600 hover:shadow-emerald-300 transition-all h-auto mt-4">
                   Create Account
-                </button>
+                </Button>
              </form>
 
              <div className="mt-8 text-center">
                <p className="text-stone-500 font-medium">
                  Already have a home here?{' '}
-                 <button onClick={onSwitchToLogin} className="text-emerald-600 font-bold hover:underline">
+                 <Button variant="link" onClick={onSwitchToLogin} className="text-emerald-600 font-bold hover:underline h-auto p-0">
                    Log In
-                 </button>
+                 </Button>
                </p>
              </div>
 
@@ -127,8 +134,9 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUpSuccess, onBack, onSwit
                <div className="h-px bg-stone-200 flex-1"></div>
              </div>
 
-             <button 
-               className="w-full ghibli-btn bg-white border border-stone-200 text-stone-600 py-3 font-bold shadow-sm hover:bg-stone-50 flex items-center justify-center gap-3 transition-all disabled:opacity-50"
+             <Button
+               variant="outline"
+               className="w-full bg-white border border-stone-200 text-stone-600 py-3 font-bold shadow-sm hover:bg-stone-50 flex items-center justify-center gap-3 h-auto"
                onClick={handleGoogleLogin}
                disabled={isLoggingIn}
              >
@@ -145,7 +153,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ({ onSignUpSuccess, onBack, onSwit
                     Sign up with Google
                 </>
                )}
-             </button>
+             </Button>
           </div>
        </div>
     </div>
