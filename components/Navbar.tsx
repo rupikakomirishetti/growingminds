@@ -19,27 +19,6 @@ const Navbar: React.FC<NavbarProps> = ({ onSelect }) => {
 
         <div className="flex items-center gap-2 md:gap-4">
           <Button 
-            variant="ghost" 
-            className="hidden md:flex gap-2"
-            size="sm"
-            onClick={() => onSelect('login')}
-          >
-            <UserCircle className="w-5 h-5" />
-            Parent Portal
-          </Button>
-          
-          <Button 
-            variant="outline" 
-            className="hidden sm:flex gap-2"
-            size="sm"
-            onClick={() => onSelect('admin')}
-          >
-            <ShieldCheck className="w-5 h-5 text-sky-500" />
-            <span className="hidden lg:inline">Staff & Admin</span>
-            <span className="lg:hidden">Staff</span>
-          </Button>
-          
-          <Button 
             variant="primary" 
             size="sm"
             className="flex gap-2"
