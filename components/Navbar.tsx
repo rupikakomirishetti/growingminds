@@ -1,5 +1,5 @@
 import React from 'react';
-import { UserCircle, ShieldCheck, Baby, LogIn } from 'lucide-react';
+import { Baby, LogIn } from 'lucide-react';
 import Button from './ui/Button';
 
 interface NavbarProps {
