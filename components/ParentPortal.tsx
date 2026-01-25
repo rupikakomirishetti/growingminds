@@ -7,6 +7,7 @@ import ProgressTracker from './ProgressTracker';
 import { MOCK_ACTIVITIES, MOCK_PROGRESS } from '../constants';
 import { Child } from '../types';
 import { Home, Activity, Image, BarChart3, MessageCircle, ArrowRight, Heart, Save, User, Mail, Phone, Hash, CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface ParentPortalProps {
   childrenData: Child[];
