@@ -20,9 +20,9 @@ const Navbar: React.FC<NavbarProps> = ({ onSelect }) => {
 
         <div className="flex items-center gap-2 md:gap-4">
           <Button 
-            variant="primary" 
+            variant="default" 
             size="sm"
-            className="flex gap-2"
+            className="flex gap-2 bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg"
             onClick={() => onSelect('login')}
           >
             <LogIn className="w-4 h-4 md:hidden" />
