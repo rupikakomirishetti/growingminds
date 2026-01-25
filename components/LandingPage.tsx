@@ -39,10 +39,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelect }) => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-             <Button variant="primary" size="lg" className="w-full sm:w-auto px-12 py-5 text-lg" onClick={() => onSelect('login')}>
+             <Button variant="default" size="lg" className="w-full sm:w-auto px-12 py-5 text-lg bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg h-auto" onClick={() => onSelect('login')}>
                 Get Started
              </Button>
-             <Button variant="ghost" size="lg" className="w-full sm:w-auto text-stone-500">
+             <Button variant="ghost" size="lg" className="w-full sm:w-auto text-stone-500 h-auto py-5">
                 Explore the Magic
              </Button>
           </div>
