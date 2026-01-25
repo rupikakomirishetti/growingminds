@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Mail, Lock } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface LoginPageProps {
   onLoginSuccess: () => void;
@@ -41,9 +44,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, onSwitchT
        <div className="absolute bottom-[-10%] right-[-5%] w-80 h-80 bg-rose-100/50 rounded-full blur-3xl"></div>
 
        <div className="max-w-md w-full relative z-10 animate-fade-in">
-          <button onClick={onBack} className="mb-6 flex items-center gap-2 text-stone-500 hover:text-stone-700 font-bold transition-colors">
+          <Button variant="ghost" onClick={onBack} className="mb-6 flex items-center gap-2 text-stone-500 hover:text-stone-700 font-bold">
             <ArrowLeft className="w-5 h-5" /> Back to Village
-          </button>
+          </Button>
 
           <div className="ghibli-card p-8 bg-white/90 shadow-xl border border-white">
              <div className="text-center mb-8">
@@ -59,13 +62,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, onSwitchT
 
              <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                    <label className="block text-sm font-bold text-stone-600 ml-1">Email Address</label>
+                    <Label htmlFor="email" className="text-sm font-bold text-stone-600 ml-1">Email Address</Label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
-                      <input 
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 z-10" />
+                      <Input
+                        id="email"
                         type="email" 
                         required 
-                        className="ghibli-input w-full pl-10" 
+                        className="ghibli-input w-full pl-10 h-12" 
                         placeholder="parent@example.com"
                         value={formData.email}
                         onChange={e => setFormData({...formData, email: e.target.value})}
@@ -75,15 +79,18 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, onSwitchT
 
                 <div className="space-y-2">
                     <div className="flex justify-between items-center ml-1">
-                        <label className="block text-sm font-bold text-stone-600">Password</label>
-                        <button type="button" className="text-xs text-stone-400 hover:text-emerald-600 font-bold">Forgot Password?</button>
+                        <Label htmlFor="password" className="text-sm font-bold text-stone-600">Password</Label>
+                        <Button variant="link" type="button" className="text-xs text-stone-400 hover:text-emerald-600 font-bold h-auto p-0">
+                          Forgot Password?
+                        </Button>
                     </div>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
-                      <input 
+                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 z-10" />
+                      <Input
+                        id="password"
                         type="password" 
                         required 
-                        className="ghibli-input w-full pl-10" 
+                        className="ghibli-input w-full pl-10 h-12" 
                         placeholder="••••••••"
                         value={formData.password}
                         onChange={e => setFormData({...formData, password: e.target.value})}
@@ -91,17 +98,17 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, onSwitchT
                     </div>
                 </div>
 
-                <button type="submit" className="w-full ghibli-btn bg-sky-500 text-white py-3.5 font-bold shadow-lg shadow-sky-200 hover:bg-sky-600 hover:shadow-sky-300 transition-all transform active:scale-95">
+                <Button type="submit" className="w-full bg-sky-500 text-white py-3.5 font-bold shadow-lg shadow-sky-200 hover:bg-sky-600 hover:shadow-sky-300 transition-all h-auto">
                   Log In
-                </button>
+                </Button>
              </form>
 
              <div className="mt-8 text-center">
                <p className="text-stone-500 font-medium">
                  New to the village?{' '}
-                 <button onClick={onSwitchToSignUp} className="text-sky-600 font-bold hover:underline">
+                 <Button variant="link" onClick={onSwitchToSignUp} className="text-sky-600 font-bold hover:underline h-auto p-0">
                    Create Account
-                 </button>
+                 </Button>
                </p>
              </div>
 
@@ -111,10 +118,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, onSwitchT
                <div className="h-px bg-stone-200 flex-1"></div>
              </div>
 
-             <button 
+             <Button
+               variant="outline"
                onClick={handleGoogleLogin} 
                disabled={isLoggingIn}
-               className="w-full ghibli-btn bg-white border border-stone-200 text-stone-600 py-3.5 font-bold shadow-sm hover:bg-stone-50 flex items-center justify-center gap-3 transition-all disabled:opacity-50"
+               className="w-full bg-white border border-stone-200 text-stone-600 py-3.5 font-bold shadow-sm hover:bg-stone-50 flex items-center justify-center gap-3 h-auto"
              >
                {isLoggingIn ? (
                  <span className="animate-pulse">Connecting...</span>
@@ -129,7 +137,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, onSwitchT
                     Sign in with Google
                  </>
                )}
-             </button>
+             </Button>
           </div>
        </div>
     </div>
