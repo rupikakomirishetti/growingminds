@@ -185,10 +185,10 @@ const ParentPortal: React.FC<ParentPortalProps> = ({ childrenData, onLogout }) =
               </div>
 
               <div className="pt-6 border-t border-stone-50">
-                <button
+                <Button
                   type="submit"
                   disabled={saveStatus !== 'idle'}
-                  className={`ghibli-btn w-full py-4 text-white font-bold text-lg shadow-lg flex items-center justify-center gap-3 transition-all
+                  className={`w-full py-4 text-white font-bold text-lg shadow-lg flex items-center justify-center gap-3 h-auto
                     ${saveStatus === 'saved' ? 'bg-emerald-500 shadow-emerald-100' : 'bg-rose-400 shadow-rose-100 hover:bg-rose-500'}
                     disabled:opacity-80
                   `}
@@ -208,7 +208,7 @@ const ParentPortal: React.FC<ParentPortalProps> = ({ childrenData, onLogout }) =
                       SETTINGS SAVED!
                     </>
                   )}
-                </button>
+                </Button>
               </div>
             </form>
           </div>
