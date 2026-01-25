@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import Sidebar, { MenuItem } from './Sidebar';
 import { Menu, Search, Bell } from 'lucide-react';

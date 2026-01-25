@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import ParentPortal from '../../components/ParentPortal';
-import { useRouter } from '../../App';
+import { useRouter } from 'next/navigation';
 import { MOCK_CHILDREN } from '../../constants';
 
 export default function Page() {

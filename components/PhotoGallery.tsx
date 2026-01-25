@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { ActivityLog } from '../types';
 import { Image as ImageIcon, Calendar } from 'lucide-react';

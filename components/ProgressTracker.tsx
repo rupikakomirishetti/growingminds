@@ -1,8 +1,9 @@
+'use client';
 import React, { useState } from 'react';
 import { MilestoneMetric, Child } from '../types';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Sparkles, Brain, CheckCircle2, Circle } from 'lucide-react';
-import { getDevelopmentalInsight } from '../services/geminiService';
+
 
 interface ProgressTrackerProps {
   data: MilestoneMetric[];
@@ -13,16 +14,6 @@ const ProgressTracker: React.FC<ProgressTrackerProps> = ({ data, childrenData })
   const [loadingAi, setLoadingAi] = useState(false);
   const [aiTip, setAiTip] = useState<{title: string, content: string} | null>(null);
   const activeChild = childrenData[0];
-
-  const handleGetInsight = async () => {
-    setLoadingAi(true);
-    const result = await getDevelopmentalInsight(
-        activeChild.group, 
-        ["Playing with sand", "Reading hungry caterpillar", "Stacking blocks"]
-    );
-    setAiTip(result);
-    setLoadingAi(false);
-  };
 
   const chartData = data.reduce((acc: any[], curr) => {
     const existingEntry = acc.find(item => item.date === curr.date);
@@ -58,20 +49,6 @@ const ProgressTracker: React.FC<ProgressTrackerProps> = ({ data, childrenData })
           <h1 className="text-4xl font-bold text-stone-700">Growing Up</h1>
           <p className="text-stone-400 font-medium mt-1">Watching {activeChild.firstName} bloom</p>
         </div>
-        <button 
-            onClick={handleGetInsight}
-            disabled={loadingAi}
-            className="mt-4 md:mt-0 ghibli-btn bg-gradient-to-r from-violet-400 to-fuchsia-400 text-white px-8 py-3 font-bold shadow-lg shadow-violet-200 flex items-center gap-2 disabled:opacity-70"
-        >
-            {loadingAi ? (
-                <span className="animate-pulse">Consulting Spirits...</span>
-            ) : (
-                <>
-                    <Sparkles className="w-5 h-5" />
-                    <span>Ask the Spirits</span>
-                </>
-            )}
-        </button>
       </div>
 
       {aiTip && (

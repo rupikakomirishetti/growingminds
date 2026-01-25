@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Settings, LogOut, LucideIcon, X, Baby } from 'lucide-react';
 

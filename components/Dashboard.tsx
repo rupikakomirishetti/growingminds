@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Child, ActivityLog, ActivityType } from '../types';
 import { Clock, Utensils, Moon, AlertCircle, ArrowUpRight, Sun } from 'lucide-react';

@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  background-color: #fdfcf0;
+  color: #4a4a4a;
+  background-image: 
+    radial-gradient(#e6e2d3 1px, transparent 1px),
+    radial-gradient(#e6e2d3 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-spin-slow {
+    animation: spin 20s linear infinite;
+  }
+  
+  .ghibli-card {
+    @apply bg-white/80 backdrop-blur-sm rounded-3xl border-2 border-white shadow-xl;
+  }
+  
+  .ghibli-btn {
+    @apply rounded-full transition-all duration-300 hover:shadow-2xl hover:scale-105 active:scale-95;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}

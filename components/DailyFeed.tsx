@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { ActivityLog, ActivityType, Child } from '../types';
 import { Utensils, Moon, Gamepad2, BookOpen, Clock, Baby } from 'lucide-react';

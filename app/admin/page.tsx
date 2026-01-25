@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import AdminPortal from '../../components/AdminPortal';
-import { useRouter } from '../../App';
+import { useRouter } from 'next/navigation';
 import { MOCK_CHILDREN } from '../../constants';
 import { Child } from '../../types';
 

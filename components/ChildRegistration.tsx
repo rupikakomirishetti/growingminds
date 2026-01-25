@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { Child } from '../types';
 import { Camera, UserPlus, Sparkles } from 'lucide-react';

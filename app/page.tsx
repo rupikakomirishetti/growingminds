@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import LandingPage from '../components/LandingPage';
-import { useRouter } from '../App';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const router = useRouter();

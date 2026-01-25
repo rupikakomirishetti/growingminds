@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { Sparkles, Cloud, Sun } from 'lucide-react';
 import Navbar from './Navbar';

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import SignUpPage from '../../components/SignUpPage';
-import { useRouter } from '../../App';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const router = useRouter();

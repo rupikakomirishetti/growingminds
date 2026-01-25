@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { ArrowLeft, Mail, User, Lock } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
