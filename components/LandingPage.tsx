@@ -2,7 +2,7 @@
 import React from 'react';
 import { Sparkles, Cloud, Sun } from 'lucide-react';
 import Navbar from './Navbar';
-import Button from './ui/Button';
+import { Button } from '@/components/ui/button';
 
 interface LandingPageProps {
   onSelect: (view: 'admin' | 'parent' | 'login') => void;
