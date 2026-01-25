@@ -78,9 +78,9 @@ const ParentPortal: React.FC<ParentPortalProps> = ({ childrenData, onLogout }) =
              <div className="ghibli-card p-0 border-0 overflow-hidden">
                 <div className="p-6 bg-violet-50 flex justify-between items-center">
                    <h2 className="font-bold text-xl text-violet-900">Recent Memories</h2>
-                   <button onClick={() => setCurrentView('gallery')} className="bg-white text-violet-600 text-xs font-bold px-4 py-2 rounded-full hover:bg-violet-100 transition-colors flex items-center gap-1 shadow-sm">
+                   <Button onClick={() => setCurrentView('gallery')} className="bg-white text-violet-600 text-xs font-bold px-4 py-2 rounded-full hover:bg-violet-100 transition-colors flex items-center gap-1 shadow-sm h-auto" variant="outline">
                      View Gallery <ArrowRight className="w-3 h-3"/>
-                   </button>
+                   </Button>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-8 bg-white/60">
                    {[1,2,3,4].map(i => (
