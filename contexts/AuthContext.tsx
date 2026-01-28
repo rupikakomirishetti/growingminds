@@ -7,7 +7,12 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  email: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  isAdmin: boolean;
   signInWithGoogle: () => Promise<void>;
+  signInWithOtp: (email: string, metadata?: any) => Promise<void>;
   signOut: () => Promise<void>;
   isMocking: boolean;
 }
@@ -18,6 +23,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Derived user profile data
+  const email = user?.email ?? null;
+  const fullName = user?.user_metadata?.full_name || user?.user_metadata?.name || '';
+  const [firstName, lastName] = fullName ? fullName.split(' ') : [null, null];
+
+  // Admin check
+  const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+  const isAdmin = !!email && !!adminEmail && email.toLowerCase() === adminEmail.toLowerCase();
 
   useEffect(() => {
     if (isSupabaseConfigured && supabase) {
@@ -60,6 +74,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const signInWithOtp = async (email: string, metadata?: any) => {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/login`,
+          data: metadata
+        },
+      });
+      if (error) throw error;
+    } else {
+      // Mocking magic link
+      console.log(`[Mock] Magic link sent to ${email}`, metadata);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+  };
+
   const signOut = async () => {
     if (isSupabaseConfigured && supabase) {
       await supabase.auth.signOut();
@@ -70,7 +101,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signInWithGoogle, signOut, isMocking: !isSupabaseConfigured }}>
+    <AuthContext.Provider value={{
+      user,
+      session,
+      loading,
+      email,
+      firstName,
+      lastName,
+      isAdmin,
+      signInWithGoogle,
+      signInWithOtp,
+      signOut,
+      isMocking: !isSupabaseConfigured
+    }}>
       {children}
     </AuthContext.Provider>
   );

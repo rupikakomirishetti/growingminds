@@ -1,6 +1,8 @@
 'use client';
 import React from 'react';
 import { Settings, LogOut, LucideIcon, X, Baby } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 export interface MenuItem {
   id: string;
@@ -19,104 +21,106 @@ interface SidebarProps {
   onLogout: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ 
-  currentView, 
-  setView, 
-  isOpen, 
-  setIsOpen, 
+const Sidebar: React.FC<SidebarProps> = ({
+  currentView,
+  setView,
+  isOpen,
+  setIsOpen,
   menuItems,
   title,
-  colorClass = "green", // default to nature green
+  colorClass = "green",
   onLogout
 }) => {
-  
-  // Theme colors - soft nature tones
-  const themeColors: Record<string, string> = {
-    indigo: 'text-indigo-600 bg-indigo-50',
-    pink: 'text-rose-500 bg-rose-50',
-    green: 'text-emerald-600 bg-emerald-50',
-    blue: 'text-sky-600 bg-sky-50',
-  };
-
-  const activeStyle = themeColors[colorClass] || themeColors.green;
   const accentColor = colorClass === 'pink' ? 'text-rose-500' : 'text-emerald-600';
+  const activeBg = colorClass === 'pink' ? 'bg-rose-50 text-rose-600' : 'bg-emerald-50 text-emerald-700';
 
   return (
     <>
-      {/* Mobile Overlay with blur */}
+      {/* Mobile Overlay */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-stone-800/20 backdrop-blur-sm z-40 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <div className={`
-        fixed inset-y-0 left-0 z-50 w-72 bg-white/90 backdrop-blur-md border-r border-stone-100 transform transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1)
-        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
-        md:translate-x-0 md:static md:inset-auto md:flex md:flex-col
-        shadow-[4px_0_24px_rgba(0,0,0,0.02)]
-      `}>
-        <div className="p-8 flex items-center justify-between">
+      <div className={cn(
+        "fixed inset-y-0 left-0 z-50 w-72 bg-white/90 backdrop-blur-md border-r border-stone-100 transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1) flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.02)]",
+        isOpen ? 'translate-x-0' : '-translate-x-full',
+        "md:translate-x-0 md:static md:inset-auto"
+      )}>
+        <div className="p-8 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-full ${colorClass === 'pink' ? 'bg-rose-100' : 'bg-emerald-100'} flex items-center justify-center`}>
-              <Baby className={`w-5 h-5 ${accentColor}`} />
+            <div className={cn(
+              "w-10 h-10 rounded-full flex items-center justify-center",
+              colorClass === 'pink' ? 'bg-rose-100' : 'bg-emerald-100'
+            )}>
+              <Baby className={cn("w-5 h-5", accentColor)} />
             </div>
-            <span className={`text-2xl font-bold ${accentColor} tracking-wide`}>{title}</span>
+            <span className={cn("text-2xl font-bold font-[Patrick_Hand] tracking-wide", accentColor)}>{title}</span>
           </div>
-          <button onClick={() => setIsOpen(false)} className="md:hidden text-stone-400 hover:text-stone-600">
-             <X className="w-6 h-6" />
-          </button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsOpen(false)}
+            className="md:hidden text-stone-400 hover:text-stone-600"
+          >
+            <X className="w-6 h-6" />
+          </Button>
         </div>
 
-        <nav className="flex-1 px-4 space-y-2 overflow-y-auto py-4">
+        <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentView === item.id;
             return (
-              <button
+              <Button
                 key={item.id}
+                variant="ghost"
                 onClick={() => {
                   setView(item.id);
                   setIsOpen(false);
                 }}
-                className={`
-                  w-full flex items-center gap-4 px-6 py-4 rounded-3xl text-sm font-semibold transition-all duration-300
-                  ${isActive 
-                    ? `${activeStyle} shadow-sm translate-x-2` 
-                    : 'text-stone-500 hover:bg-stone-50 hover:text-stone-700 hover:translate-x-1'}
-                `}
+                className={cn(
+                  "w-full justify-start gap-4 px-6 py-6 rounded-3xl text-sm font-semibold transition-all duration-300",
+                  isActive
+                    ? cn(activeBg, "shadow-sm translate-x-2")
+                    : "text-stone-500 hover:bg-stone-50 hover:text-stone-700 hover:translate-x-1"
+                )}
               >
-                <Icon className={`w-5 h-5 ${isActive ? 'scale-110' : ''} transition-transform`} strokeWidth={2} />
+                <Icon className={cn("w-5 h-5 transition-transform", isActive && "scale-110")} strokeWidth={2} />
                 {item.label}
-              </button>
+              </Button>
             );
           })}
         </nav>
 
-        <div className="p-6 border-t border-stone-100 space-y-2">
-           <button 
-             onClick={() => {
-                setView('settings');
-                setIsOpen(false);
-             }}
-             className={`w-full flex items-center gap-4 px-6 py-3 rounded-3xl text-sm font-semibold transition-all duration-300
-               ${currentView === 'settings' 
-                 ? `${activeStyle} shadow-sm` 
-                 : 'text-stone-500 hover:bg-stone-50 hover:text-stone-700'}
-             `}
-           >
-             <Settings className="w-5 h-5" />
-             Settings
-           </button>
-           <button 
-             onClick={onLogout}
-             className="w-full flex items-center gap-4 px-6 py-3 rounded-3xl text-sm font-semibold text-rose-500 hover:bg-rose-50 transition-colors"
-            >
-             <LogOut className="w-5 h-5" />
-             Logout
-           </button>
+        <div className="p-6 border-t border-stone-100 space-y-2 shrink-0">
+          <Button
+            variant="ghost"
+            onClick={() => {
+              setView('settings');
+              setIsOpen(false);
+            }}
+            className={cn(
+              "w-full justify-start gap-4 px-6 py-6 rounded-3xl text-sm font-semibold transition-all duration-300",
+              currentView === 'settings'
+                ? cn(activeBg, "shadow-sm")
+                : "text-stone-500 hover:bg-stone-50 hover:text-stone-700"
+            )}
+          >
+            <Settings className="w-5 h-5" />
+            Settings
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={onLogout}
+            className="w-full justify-start gap-4 px-6 py-6 rounded-3xl text-sm font-semibold text-rose-500 hover:bg-rose-50 hover:text-rose-600 transition-colors"
+          >
+            <LogOut className="w-5 h-5" />
+            Logout
+          </Button>
         </div>
       </div>
     </>

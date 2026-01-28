@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import AdminPortal from '../../components/AdminPortal';
+import ProtectedRoute from '../../components/ProtectedRoute';
 import { useRouter } from 'next/navigation';
 import { MOCK_CHILDREN } from '../../constants';
 import { Child } from '../../types';
@@ -14,10 +15,12 @@ export default function Page() {
   };
 
   return (
-    <AdminPortal 
-      childrenData={children}
-      onRegister={handleRegister}
-      onLogout={() => router.push('/')}
-    />
+    <ProtectedRoute requireAdmin>
+      <AdminPortal
+        childrenData={children}
+        onRegister={handleRegister}
+        onLogout={() => router.push('/')}
+      />
+    </ProtectedRoute>
   );
 }
