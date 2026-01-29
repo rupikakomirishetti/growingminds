@@ -2,6 +2,7 @@
 import React from 'react';
 import { Sparkles, Cloud, Sun, Heart, Shield, Zap } from 'lucide-react';
 import Navbar from './Navbar';
+import BentoGrid from './BentoGrid';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -68,6 +69,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelect }) => {
           </div>
         </div>
       </section>
+
+      {/* Bento Grid Section */}
+      <BentoGrid />
 
       {/* Features Grid */}
       <section className="w-full max-w-6xl px-6 py-20 relative z-10">
