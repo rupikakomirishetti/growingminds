@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Sparkles, Cloud, Sun, Heart, Shield, Zap } from 'lucide-react';
+import { Sparkles, Cloud, Sun, Heart, Shield, Zap, Stethoscope, Award } from 'lucide-react';
 import Navbar from './Navbar';
 import BentoGrid from './BentoGrid';
 import Image from 'next/image';
@@ -59,16 +59,27 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelect }) => {
 
       {/* Features Grid */}
       <section className="w-full max-w-6xl px-6 py-20 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <FeatureCard
-            icon={<Heart className="w-8 h-8 text-rose-400" />}
-            title="Nurturing Care"
-            description="Personalized attention for every child's unique developmental journey."
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <FeatureCard
             icon={<Shield className="w-8 h-8 text-blue-400" />}
             title="Safe & Secure"
             description="A secure, monitored environment where children can explore and grow with confidence."
+          />
+          
+          <FeatureCard
+            icon={<Stethoscope className="w-8 h-8 text-emerald-400" />}
+            title="CPR & First Aid Certified"
+            description="Our staff is fully trained and certified to handle emergencies with expert care."
+          />
+          <FeatureCard
+            icon={<Award className="w-8 h-8 text-purple-400" />}
+            title="Fully Accredited"
+            description="State Licensed and fully accredited, ensuring the highest standards of safety and education."
+          />
+          <FeatureCard
+            icon={<Heart className="w-8 h-8 text-rose-400" />}
+            title="Nurturing Care"
+            description="Personalized attention for every child's unique developmental journey."
           />
           <FeatureCard
             icon={<Zap className="w-8 h-8 text-amber-400" />}
