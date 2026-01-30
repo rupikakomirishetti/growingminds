@@ -19,7 +19,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelect }) => {
         {/* Full Screen Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/daycare-hero.png"
+            src="/images/hero.jpg"
             alt="Warm and inviting daycare classroom"
             fill
             className="object-cover"
@@ -32,20 +32,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelect }) => {
         <Navbar onSelect={onSelect} />
 
         {/* Hero Section */}
-        <section className="max-w-6xl w-full relative z-10 text-center flex flex-col items-center justify-center pt-32 md:pt-48 pb-20 px-6">
+        <section className="mt-48 w-full relative z-10 text-center flex flex-col items-center justify-center pt-32 md:pt-48 pb-20 px-6">
           <div className="animate-fade-in space-y-8">
             <div className="space-y-4">
-              <p className="text-xl md:text-2xl text-stone-600 font-medium max-w-2xl mx-auto leading-relaxed">
+              <p className="text-5xl text-shadow-gray-600 font-bold max-w-2xl mx-auto leading-relaxed">
                 A gentle bridge between busy parents and their little adventurers. Captured moments, growth, and peaceful community.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
+            <div className="mt-18 flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
               <Button
                 variant="default"
                 size="lg"
-                className="w-full sm:w-auto px-12 py-7 text-xl shadow-xl hover:shadow-primary/20 transition-all hover:-translate-y-1"
-                onClick={() => onSelect('login')}
+                className="bg-purple-500/90 w-full sm:w-auto px-12 py-7 text-xl shadow-xl hover:shadow-primary/20 transition-all hover:-translate-y-1"
+                onClick={() => window.scrollTo({ top: document.getElementById('bento-grid')?.offsetTop, behavior: 'smooth' })}
               >
                 Learn More
               </Button>
@@ -68,12 +68,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelect }) => {
           <FeatureCard
             icon={<Shield className="w-8 h-8 text-blue-400" />}
             title="Safe & Secure"
-            description="Direct, encrypted communication and real-time safe updates for peace of mind."
+            description="A secure, monitored environment where children can explore and grow with confidence."
           />
           <FeatureCard
             icon={<Zap className="w-8 h-8 text-amber-400" />}
-            title="AI Powered"
-            description="Smart insights into growth patterns and learning milestones using Gemini."
+            title="Interactive Learning"
+            description="Engaging activities that spark curiosity and foster creativity."
           />
         </div>
       </section>

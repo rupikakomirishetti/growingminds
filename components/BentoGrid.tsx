@@ -2,10 +2,11 @@
 import React from 'react';
 import Image from 'next/image';
 import { Palette, Rocket, Sparkles, Users, Heart } from 'lucide-react';
+import { Button } from '@base-ui/react';
 
 const BentoGrid = () => {
     return (
-        <section className="w-full max-w-7xl mx-auto px-6 py-20 relative z-10">
+        <section id="bento-grid" className="w-full max-w-7xl mx-auto px-6 py-20 relative z-10">
             <div className="text-center mb-16 space-y-4 animate-fade-in">
                 <h2 className="text-5xl md:text-6xl font-bold text-emerald-900 font-patrick">
                     Where Little Minds <span className="text-primary italic">Flourish</span>
@@ -128,7 +129,7 @@ const BentoGrid = () => {
             </div>
 
             {/* Call to Action */}
-            <div className="mt-16 text-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            <div className="mt-16 flex flex-col items-center text-center animate-fade-in" style={{ animationDelay: '0.3s' }}>
                 <div className="inline-flex items-center gap-3 bg-linear-to-r from-primary/10 to-purple-500/10 backdrop-blur-xl px-8 py-4 rounded-full border border-primary/20 shadow-lg">
                     <Sparkles className="w-5 h-5 text-primary" />
                     <span className="font-bold text-emerald-900 text-lg">
@@ -136,6 +137,12 @@ const BentoGrid = () => {
                     </span>
                     <Sparkles className="w-5 h-5 text-primary" />
                 </div>
+                <Button
+                    className="mt-10 rounded-md bg-purple-500/10 w-full sm:w-auto px-12 py-7 text-xl shadow-xl hover:shadow-primary/20 transition-all hover:-translate-y-1 cursor-pointer"
+                    onClick={() => window.location.href = '/signup'}
+                >
+                    Enroll now to give your child the best start in life!
+                </Button>
             </div>
         </section>
     );
