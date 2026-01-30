@@ -14,7 +14,6 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<void>;
   signInWithOtp: (email: string, metadata?: any) => Promise<void>;
   signOut: () => Promise<void>;
-  isMocking: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -49,8 +48,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return () => subscription.unsubscribe();
     } else {
-      const mockUser = localStorage.getItem('mock_user');
-      if (mockUser) setUser(JSON.parse(mockUser));
       setLoading(false);
     }
   }, []);
@@ -62,15 +59,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         options: { redirectTo: window.location.origin }
       });
       if (error) throw error;
-    } else {
-      const mockUser: any = {
-        id: 'mock-user-123',
-        email: 'parent@example.com',
-        user_metadata: { full_name: 'Thompson Family', avatar_url: 'https://picsum.photos/200' }
-      };
-      localStorage.setItem('mock_user', JSON.stringify(mockUser));
-      setUser(mockUser);
-      await new Promise(resolve => setTimeout(resolve, 800));
     }
   };
 
@@ -84,19 +72,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
       });
       if (error) throw error;
-    } else {
-      // Mocking magic link
-      console.log(`[Mock] Magic link sent to ${email}`, metadata);
-      await new Promise(resolve => setTimeout(resolve, 1000));
     }
   };
 
   const signOut = async () => {
     if (isSupabaseConfigured && supabase) {
       await supabase.auth.signOut();
-    } else {
-      localStorage.removeItem('mock_user');
-      setUser(null);
     }
   };
 
@@ -111,8 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isAdmin,
       signInWithGoogle,
       signInWithOtp,
-      signOut,
-      isMocking: !isSupabaseConfigured
+      signOut
     }}>
       {children}
     </AuthContext.Provider>
