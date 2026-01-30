@@ -34,7 +34,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requireAdmin 
     // Show loading state while checking auth
     if (loading) {
         return (
-            <div className="min-h-screen bg-gradient-to-b from-sky-100 via-sky-50 to-background flex items-center justify-center">
+            <div className="min-h-screen bg-linear-to-b from-sky-100 via-sky-50 to-background flex items-center justify-center">
                 <div className="text-center space-y-4">
                     <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
                     <p className="text-stone-600 font-medium">Loading...</p>

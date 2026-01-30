@@ -46,7 +46,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, onSwitchT
 
   if (isEmailSent) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-sky-100 via-sky-50 to-[#fdfcf0] flex items-center justify-center p-6 relative overflow-hidden font-[Quicksand]">
+      <div className="min-h-screen bg-linear-to-b from-sky-100 via-sky-50 to-[#fdfcf0] flex items-center justify-center p-6 relative overflow-hidden font-[Quicksand]">
         <div className="max-w-md w-full relative z-10 animate-fade-in">
           <div className="ghibli-card p-12 bg-white/90 shadow-xl border border-white text-center space-y-6">
             <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
@@ -64,7 +64,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack, onSwitchT
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-100 via-sky-50 to-[#fdfcf0] flex items-center justify-center p-6 relative overflow-hidden font-[Quicksand]">
+    <div className="min-h-screen bg-linear-to-b from-sky-100 via-sky-50 to-[#fdfcf0] flex items-center justify-center p-6 relative overflow-hidden font-[Quicksand]">
 
       {/* Decorative Background Elements */}
       <div className="absolute top-[-10%] left-[-5%] w-64 h-64 bg-emerald-100/50 rounded-full blur-3xl"></div>

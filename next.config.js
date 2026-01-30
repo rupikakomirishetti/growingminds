@@ -7,7 +7,12 @@ const nextConfig = {
     SUPABASE_KEY: process.env.SUPABASE_KEY || '',
   },
   images: {
-    domains: ['picsum.photos'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+      },
+    ],
   },
 }
 

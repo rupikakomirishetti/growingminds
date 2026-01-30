@@ -3,6 +3,7 @@ import React from 'react';
 import { Sparkles, Cloud, Sun, Heart, Shield, Zap } from 'lucide-react';
 import Navbar from './Navbar';
 import BentoGrid from './BentoGrid';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -12,63 +13,46 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ onSelect }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-100 via-sky-50 to-background flex flex-col items-center relative overflow-hidden font-quicksand">
-      <Navbar onSelect={onSelect} />
-
-      {/* Scenic Elements */}
-      <div className="absolute top-32 left-[5%] text-white/60 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '0s' }}>
-        <Cloud className="w-48 h-48 fill-white" />
-      </div>
-      <div className="absolute top-48 right-[10%] text-white/50 animate-float pointer-events-none hidden lg:block" style={{ animationDelay: '2s' }}>
-        <Cloud className="w-32 h-32 fill-white" />
-      </div>
-      <div className="absolute top-[-10%] right-[-5%] text-amber-200/30 animate-spin-slow pointer-events-none">
-        <Sun className="w-96 h-96 fill-amber-100" />
-      </div>
-
-      {/* Hero Section */}
-      <section className="max-w-6xl w-full relative z-10 text-center flex flex-col items-center justify-center pt-32 md:pt-48 pb-20 px-6">
-        <div className="animate-fade-in space-y-8">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-white/80 backdrop-blur-md rounded-[2rem] shadow-2xl border border-white transform hover:rotate-12 transition-transform duration-500">
-            <span className="font-bold text-5xl font-patrick text-primary">K</span>
-          </div>
-
-          <div className="space-y-4">
-            <h1 className="text-6xl sm:text-8xl font-bold text-emerald-900 tracking-tight drop-shadow-sm font-patrick leading-[1.1]">
-              The Village is<br /> <span className="text-primary italic">Always</span> Near.
-            </h1>
-
-            <p className="text-xl md:text-2xl text-stone-600 font-medium max-w-2xl mx-auto leading-relaxed">
-              A gentle bridge between busy parents and their little adventurers. Captured moments, AI-powered growth, and peaceful community.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
-            <Button
-              variant="default"
-              size="lg"
-              className="w-full sm:w-auto px-12 py-7 text-xl shadow-xl hover:shadow-primary/20 transition-all hover:-translate-y-1"
-              onClick={() => onSelect('login')}
-            >
-              Get Started
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full sm:w-auto px-12 py-7 text-xl border-2 hover:bg-white transition-all hover:-translate-y-1"
-            >
-              Explore the Magic
-            </Button>
-          </div>
+    <div className="min-h-screen bg-background flex flex-col items-center relative overflow-hidden font-quicksand">
+      {/* Hero Background Container */}
+      <div className="relative w-full min-h-screen flex flex-col items-center">
+        {/* Full Screen Background Image */}
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/images/daycare-hero.png"
+            alt="Warm and inviting daycare classroom"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Soft gradient overlay for readability and premium feel */}
+          <div className="absolute inset-0 bg-linear-to-b from-white/40 via-white/10 to-sky-50/80 backdrop-blur-[1px]" />
         </div>
 
-        <div className="mt-20 flex flex-wrap justify-center gap-8 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-          <div className="inline-flex items-center gap-3 bg-white/40 backdrop-blur-xl px-8 py-4 rounded-full border border-white/60 shadow-lg hover:shadow-xl transition-all cursor-default group">
-            <Sparkles className="w-6 h-6 text-amber-400 group-hover:scale-125 transition-transform" />
-            <span className="font-bold text-stone-600 text-sm uppercase tracking-[0.2em]">Gemini AI Insights</span>
+        <Navbar onSelect={onSelect} />
+
+        {/* Hero Section */}
+        <section className="max-w-6xl w-full relative z-10 text-center flex flex-col items-center justify-center pt-32 md:pt-48 pb-20 px-6">
+          <div className="animate-fade-in space-y-8">
+            <div className="space-y-4">
+              <p className="text-xl md:text-2xl text-stone-600 font-medium max-w-2xl mx-auto leading-relaxed">
+                A gentle bridge between busy parents and their little adventurers. Captured moments, growth, and peaceful community.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
+              <Button
+                variant="default"
+                size="lg"
+                className="w-full sm:w-auto px-12 py-7 text-xl shadow-xl hover:shadow-primary/20 transition-all hover:-translate-y-1"
+                onClick={() => onSelect('login')}
+              >
+                Learn More
+              </Button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* Bento Grid Section */}
       <BentoGrid />
@@ -95,7 +79,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelect }) => {
       </section>
 
       {/* Ground Decoration */}
-      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-emerald-100/40 to-transparent pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-64 bg-linear-to-t from-emerald-100/40 to-transparent pointer-events-none"></div>
     </div>
   );
 };

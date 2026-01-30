@@ -45,7 +45,7 @@ const AdminPortal: React.FC<AdminPortalProps> = ({ childrenData, onRegister, onL
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 pb-12">
             {childrenData.map(child => (
               <div key={child.id} className="ghibli-card p-6 flex flex-col items-center border-0">
-                <div className="w-24 h-24 rounded-full p-1 mb-4 bg-gradient-to-br from-emerald-100 to-sky-100 shadow-inner">
+                <div className="w-24 h-24 rounded-full p-1 mb-4 bg-linear-to-br from-emerald-100 to-sky-100 shadow-inner">
                   <img src={child.photoUrl} alt={child.firstName} className="w-full h-full rounded-full object-cover border-2 border-white" />
                 </div>
                 <h3 className="font-bold text-xl text-stone-700">{child.firstName} {child.lastName}</h3>

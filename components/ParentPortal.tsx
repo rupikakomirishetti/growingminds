@@ -48,7 +48,7 @@ const ParentPortal: React.FC<ParentPortalProps> = ({ childrenData, onLogout }) =
       case 'home':
         return (
           <div className="space-y-8 pb-12">
-            <div className="ghibli-card bg-gradient-to-r from-rose-200 to-orange-100 p-8 flex flex-col md:flex-row items-center justify-between gap-8 border-0 relative overflow-hidden">
+            <div className="ghibli-card bg-linear-to-r from-rose-200 to-orange-100 p-8 flex flex-col md:flex-row items-center justify-between gap-8 border-0 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
               <div className="relative z-10">
                 <h1 className="text-4xl font-bold text-stone-800 mb-2 font-[Patrick_Hand]">Hello, Thompson Family!</h1>

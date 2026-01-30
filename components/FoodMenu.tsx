@@ -42,12 +42,11 @@ const FoodMenu: React.FC<FoodMenuProps> = ({ isEditable = false }) => {
             const { data, error } = await supabase
                 .from('food_menu')
                 .select('*')
-                .order('day', { ascending: false }); // Ascending sort by sorting logic if needed, usually fixed days list is better
+                .order('day', { ascending: false });
 
             if (error) throw error;
 
             if (data && data.length > 0) {
-                // Merge fetched data with default structure to ensure correct order
                 const orderedMenu = DEFAULT_MENU.map(defaultDay => {
                     const found = data.find(d => d.day === defaultDay.day);
                     return found || defaultDay;
@@ -157,7 +156,7 @@ const FoodMenu: React.FC<FoodMenuProps> = ({ isEditable = false }) => {
                                         className="bg-white/50 border-amber-200 focus-visible:ring-amber-400"
                                     />
                                 ) : (
-                                    <p className="text-stone-600 font-medium pl-6 min-h-[1.5rem]">{day.breakfast || '--'}</p>
+                                    <p className="text-stone-600 font-medium pl-6 min-h-6">{day.breakfast || '--'}</p>
                                 )}
                             </div>
 
@@ -174,7 +173,7 @@ const FoodMenu: React.FC<FoodMenuProps> = ({ isEditable = false }) => {
                                         className="bg-white/50 border-rose-200 focus-visible:ring-rose-400"
                                     />
                                 ) : (
-                                    <p className="text-stone-600 font-medium pl-6 min-h-[1.5rem]">{day.lunch || '--'}</p>
+                                    <p className="text-stone-600 font-medium pl-6 min-h-6">{day.lunch || '--'}</p>
                                 )}
                             </div>
 
@@ -191,7 +190,7 @@ const FoodMenu: React.FC<FoodMenuProps> = ({ isEditable = false }) => {
                                         className="bg-white/50 border-sky-200 focus-visible:ring-sky-400"
                                     />
                                 ) : (
-                                    <p className="text-stone-600 font-medium pl-6 min-h-[1.5rem]">{day.snack || '--'}</p>
+                                    <p className="text-stone-600 font-medium pl-6 min-h-6">{day.snack || '--'}</p>
                                 )}
                             </div>
                         </CardContent>
