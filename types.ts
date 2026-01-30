@@ -18,6 +18,9 @@ export interface Child {
   group: string; // e.g., "Toddlers", "Preschool"
   email?: string;
   phoneNumber?: string;
+  medication?: string;
+  emergencyContact?: string;
+  enrollmentType?: string;
 }
 
 export interface ActivityLog {
@@ -39,4 +42,12 @@ export interface MilestoneMetric {
 export interface AITip {
   title: string;
   content: string;
+}
+
+export interface ActivityPhoto {
+  id: string;
+  studentId: string;
+  photoUrl: string;
+  description?: string;
+  createdAt: string;
 }

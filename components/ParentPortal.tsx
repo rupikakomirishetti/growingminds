@@ -1,13 +1,14 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from './Layout';
 import DailyFeed from './DailyFeed';
 import PhotoGallery from './PhotoGallery';
 import ProgressTracker from './ProgressTracker';
 import { MOCK_ACTIVITIES, MOCK_PROGRESS } from '../constants';
-import { Child } from '../types';
+import { Child, ActivityPhoto } from '../types';
 import { Home, Activity, Image, BarChart3, MessageCircle, ArrowRight, Heart, Save, User, Mail, Phone, Hash, CheckCircle, Utensils } from 'lucide-react';
 import FoodMenu from './FoodMenu';
+import { supabase } from '@/lib/supabase';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,6 +23,37 @@ const ParentPortal: React.FC<ParentPortalProps> = ({ childrenData, onLogout }) =
   const [currentView, setCurrentView] = useState('home');
   const [myChild, setMyChild] = useState<Child>(childrenData[0]);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [activityPhotos, setActivityPhotos] = useState<ActivityPhoto[]>([]);
+
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      if (!myChild?.id) return;
+
+      const { data, error } = await supabase
+        .from('activity_photos')
+        .select('*')
+        .eq('student_id', myChild.id)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching photos:', error);
+        return;
+      }
+
+      if (data) {
+        const photos: ActivityPhoto[] = data.map(p => ({
+          id: p.id,
+          studentId: p.student_id,
+          photoUrl: p.photo_url,
+          description: p.description,
+          createdAt: p.created_at
+        }));
+        setActivityPhotos(photos);
+      }
+    };
+
+    fetchPhotos();
+  }, [myChild.id]);
 
   const myActivities = MOCK_ACTIVITIES.filter(a => a.childId === myChild.id);
 
@@ -29,7 +61,7 @@ const ParentPortal: React.FC<ParentPortalProps> = ({ childrenData, onLogout }) =
     { id: 'home', label: 'Home Overview', icon: Home },
     { id: 'feed', label: `${myChild.firstName}'s Day`, icon: Activity },
     { id: 'gallery', label: 'Photo Gallery', icon: Image },
-    { id: 'progress', label: 'Development', icon: BarChart3 },
+    //{ id: 'progress', label: 'Development', icon: BarChart3 },
     { id: 'menu', label: 'Food Menu', icon: Utensils },
     { id: 'messages', label: 'Messages', icon: MessageCircle },
   ];
@@ -88,17 +120,25 @@ const ParentPortal: React.FC<ParentPortalProps> = ({ childrenData, onLogout }) =
                 </Button>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-8 bg-white/60">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="aspect-square bg-stone-100 rounded-xl overflow-hidden hover:scale-105 transition-transform shadow-sm">
-                    <img src={`https://picsum.photos/300/300?random=${i + 10}`} className="w-full h-full object-cover" alt="Preview" />
-                  </div>
-                ))}
+                {activityPhotos.length > 0 ? (
+                  activityPhotos.slice(0, 4).map((photo, i) => (
+                    <div key={photo.id} className="aspect-square bg-stone-100 rounded-xl overflow-hidden hover:scale-105 transition-transform shadow-sm">
+                      <img src={photo.photoUrl} className="w-full h-full object-cover" alt={photo.description || "Memory"} />
+                    </div>
+                  ))
+                ) : (
+                  [1, 2, 3, 4].map(i => (
+                    <div key={i} className="aspect-square bg-stone-100 rounded-xl overflow-hidden grayscale opacity-30 shadow-sm flex items-center justify-center">
+                      <Image className="w-8 h-8 text-stone-300" />
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
         );
       case 'feed': return <DailyFeed activities={myActivities} childrenData={childrenData} />;
-      case 'gallery': return <PhotoGallery activities={myActivities} />;
+      case 'gallery': return <PhotoGallery photos={activityPhotos} />;
       case 'progress': return <ProgressTracker data={MOCK_PROGRESS} childrenData={[myChild]} />;
       case 'menu': return <FoodMenu />;
       case 'messages':

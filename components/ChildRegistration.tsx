@@ -1,312 +1,263 @@
 'use client';
 import React, { useState } from 'react';
-import { Child } from '../types';
-import { Camera, UserPlus, Sparkles, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Sparkles, Heart, Shield, Phone, User, Calendar, GraduationCap, Pill, Clock } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Child } from '../types';
 
 interface ChildRegistrationProps {
-  onRegister: (child: Child) => void;
-  onCancel: () => void;
+  onCheckComplete?: () => void;
+  onRegister?: (child: Child) => void;
+  onCancel?: () => void;
 }
 
-const ChildRegistration: React.FC<ChildRegistrationProps> = ({ onRegister, onCancel }) => {
+const ChildRegistration: React.FC<ChildRegistrationProps> = ({ onCheckComplete, onRegister, onCancel }) => {
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    dateOfBirth: '',
-    allergies: '',
-    group: 'Toddlers',
-    enrollmentStatus: 'Full Time',
-    parentEmail: ''
+    dob: '',
+    gradeLevel: '',
+    enrollmentType: 'Full Time',
+    medication: '',
+    emergencyContact: '',
   });
-
-  const [errors, setErrors] = useState({
-    firstName: '',
-    lastName: '',
-    email: ''
-  });
-
-  const [submitting, setSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-
-  // Validation functions
-  const validateName = (name: string): boolean => {
-    return /^[A-Za-z\s]+$/.test(name);
-  };
-
-  const validateEmail = (email: string): boolean => {
-    return email.includes('@');
-  };
-
-  // Handle field validation on blur
-  const handleNameBlur = (field: 'firstName' | 'lastName') => {
-    const value = formData[field];
-    if (value && !validateName(value)) {
-      setErrors(prev => ({ ...prev, [field]: 'Provide a valid value' }));
-    } else {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
-
-  const handleEmailBlur = () => {
-    const value = formData.parentEmail;
-    if (value && !validateEmail(value)) {
-      setErrors(prev => ({ ...prev, email: 'Provide a valid value' }));
-    } else {
-      setErrors(prev => ({ ...prev, email: '' }));
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    // Final validation check
-    const firstNameValid = validateName(formData.firstName);
-    const lastNameValid = validateName(formData.lastName);
-    const emailValid = validateEmail(formData.parentEmail);
-
-    if (!firstNameValid || !lastNameValid || !emailValid) {
-      setErrors({
-        firstName: !firstNameValid ? 'Provide a valid value' : '',
-        lastName: !lastNameValid ? 'Provide a valid value' : '',
-        email: !emailValid ? 'Provide a valid value' : ''
-      });
+    if (!user?.email) {
+      setError("User email not found. Please log in again.");
+      setLoading(false);
       return;
     }
 
     try {
-      setSubmitting(true);
-      setSubmitError('');
-
-      // Insert into Supabase
-      const { data, error } = await supabase
+      const { data: insertedData, error: insertError } = await supabase
         .from('students')
         .insert([
           {
             first_nm: formData.firstName,
             last_nm: formData.lastName,
-            dob: formData.dateOfBirth,
-            grade_level: formData.group,
-            medication: formData.allergies || null,
-            enrollment_status: formData.enrollmentStatus,
-            email: formData.parentEmail,
-            photo_url: null // Will be handled by photo upload feature later
-          }
+            dob: formData.dob,
+            grade_level: formData.gradeLevel,
+            medication: formData.medication,
+            emergency_contact: formData.emergencyContact,
+            parent_email: user.email,
+            enrollment_type: formData.enrollmentType,
+          },
         ])
-        .select()
-        .single();
+        .select();
 
-      if (error) throw error;
+      if (insertError) throw insertError;
 
-      // Create Child object for local state update
-      const newChild: Child = {
-        id: data.id,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        dateOfBirth: formData.dateOfBirth,
-        allergies: formData.allergies,
-        group: formData.group,
-        photoUrl: `https://picsum.photos/200/200?random=${Math.floor(Math.random() * 1000)}`
-      };
-
-      setSubmitSuccess(true);
-
-      // Call parent callback
-      setTimeout(() => {
+      if (onRegister && insertedData && insertedData[0]) {
+        const dbChild = insertedData[0];
+        const newChild: Child = {
+          id: dbChild.id,
+          firstName: dbChild.first_nm,
+          lastName: dbChild.last_nm,
+          dateOfBirth: dbChild.dob,
+          allergies: dbChild.medication || 'None',
+          medication: dbChild.medication,
+          group: dbChild.grade_level,
+          photoUrl: dbChild.photo_url || `https://picsum.photos/seed/${dbChild.id}/200`,
+          enrollmentType: dbChild.enrollment_type,
+          emergencyContact: dbChild.emergency_contact,
+          email: dbChild.parent_email
+        };
         onRegister(newChild);
-      }, 1500);
-
-    } catch (error: any) {
-      console.error('Error registering student:', error);
-      setSubmitError(error.message || 'Failed to register student. Please try again.');
+      } else if (onCheckComplete) {
+        onCheckComplete();
+      }
+    } catch (err: any) {
+      console.error('Error registering child:', err);
+      setError(err.message || 'Failed to register child. Please try again.');
     } finally {
-      setSubmitting(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto animate-fade-in pb-12">
-      <div className="ghibli-card overflow-hidden bg-white/80 border-0">
-        <div className="px-8 py-8 bg-sky-50/50 flex items-center gap-4 border-b border-sky-100">
-          <div className="bg-sky-400 text-white p-3 rounded-full shadow-lg shadow-sky-200">
-            <UserPlus className="w-6 h-6" />
+    <div className="min-h-screen bg-[#fdfcf0] flex items-center justify-center p-4">
+      <div className="max-w-2xl w-full">
+        {/* Welcome Banner */}
+        <div className="mb-8 text-center space-y-4 animate-fade-in">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 rounded-full mb-4 shadow-sm animate-bounce-slow">
+            <Sparkles className="w-10 h-10 text-emerald-600" />
           </div>
-          <div>
-            <h2 className="font-bold text-2xl text-sky-900">New Adventurer</h2>
-            <p className="text-sky-700/60 font-medium">Register a new child to the village</p>
-          </div>
+          <h1 className="text-4xl font-bold text-stone-800 font-[Patrick_Hand]">Welcome to the Village!</h1>
+          <p className="text-xl text-stone-600 max-w-lg mx-auto">
+            We're so excited to have you. Let's get to know your little one so we can provide the best care possible.
+          </p>
         </div>
 
-        {submitSuccess && (
-          <div className="mx-10 mt-6 p-4 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center gap-3 animate-fade-in">
-            <CheckCircle className="w-5 h-5 text-emerald-600" />
-            <p className="text-emerald-700 font-semibold">Student registered successfully!</p>
-          </div>
-        )}
+        <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-md overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-emerald-300 via-sky-300 to-rose-300"></div>
 
-        {submitError && (
-          <div className="mx-10 mt-6 p-4 bg-rose-50 border border-rose-200 rounded-lg flex items-center gap-3 animate-fade-in">
-            <AlertCircle className="w-5 h-5 text-rose-600" />
-            <p className="text-rose-700 font-semibold">{submitError}</p>
-          </div>
-        )}
+          <CardHeader className="pb-0 pt-8 px-8">
+            <CardTitle className="text-2xl font-bold text-stone-700 flex items-center gap-2">
+              <Heart className="w-6 h-6 text-rose-400 fill-rose-100" />
+              Child Registration
+            </CardTitle>
+            <CardDescription className="text-stone-500 text-base">
+              Please fill out the details below. This helps us ensure a safe and personalized environment.
+            </CardDescription>
+          </CardHeader>
 
-        <form onSubmit={handleSubmit} className="p-10 space-y-8">
-          <div className="flex justify-center mb-10">
-            <div className="w-32 h-32 bg-stone-50 rounded-full flex items-center justify-center border-2 border-stone-200 border-dashed cursor-pointer hover:bg-sky-50 hover:border-sky-300 transition-all group relative">
-              <Camera className="w-10 h-10 text-stone-300 group-hover:text-sky-400 transition-colors" />
-              <div className="absolute bottom-0 right-0 bg-sky-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">Upload</div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <label className="block text-sm font-bold text-stone-600 ml-1">First Name</label>
-              <input
-                required
-                type="text"
-                className={`ghibli-input w-full ${errors.firstName ? 'border-rose-400 focus:ring-rose-400' : ''}`}
-                placeholder="e.g. Chihiro"
-                value={formData.firstName}
-                onChange={e => setFormData({ ...formData, firstName: e.target.value })}
-                onBlur={() => handleNameBlur('firstName')}
-              />
-              {errors.firstName && (
-                <p className="text-rose-500 text-sm font-semibold ml-1 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
-                  {errors.firstName}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <label className="block text-sm font-bold text-stone-600 ml-1">Last Name</label>
-              <input
-                required
-                type="text"
-                className={`ghibli-input w-full ${errors.lastName ? 'border-rose-400 focus:ring-rose-400' : ''}`}
-                placeholder="e.g. Ogino"
-                value={formData.lastName}
-                onChange={e => setFormData({ ...formData, lastName: e.target.value })}
-                onBlur={() => handleNameBlur('lastName')}
-              />
-              {errors.lastName && (
-                <p className="text-rose-500 text-sm font-semibold ml-1 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
-                  {errors.lastName}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <label className="block text-sm font-bold text-stone-600 ml-1">Date of Birth</label>
-              <input
-                required
-                type="date"
-                className="ghibli-input w-full"
-                value={formData.dateOfBirth}
-                onChange={e => setFormData({ ...formData, dateOfBirth: e.target.value })}
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="block text-sm font-bold text-stone-600 ml-1">Assigned Group</label>
-              <div className="relative">
-                <select
-                  className="ghibli-input w-full bg-white/90 appearance-none"
-                  value={formData.group}
-                  onChange={e => setFormData({ ...formData, group: e.target.value })}
-                >
-                  <option>Infants</option>
-                  <option>Toddlers</option>
-                  <option>Preschool</option>
-                  <option>Kindergarten Prep</option>
-                </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400">
-                  <Sparkles className="w-4 h-4" />
+          <CardContent className="p-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName" className="flex items-center gap-2 text-stone-600 font-semibold">
+                    <User className="w-4 h-4 text-emerald-500" /> First Name
+                  </Label>
+                  <Input
+                    id="firstName"
+                    required
+                    className="bg-stone-50 border-stone-200 focus:border-emerald-400 focus:ring-emerald-400/20 h-12"
+                    placeholder="e.g. Oliver"
+                    value={formData.firstName}
+                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="lastName" className="flex items-center gap-2 text-stone-600 font-semibold">
+                    <User className="w-4 h-4 text-emerald-500" /> Last Name
+                  </Label>
+                  <Input
+                    id="lastName"
+                    required
+                    className="bg-stone-50 border-stone-200 focus:border-emerald-400 focus:ring-emerald-400/20 h-12"
+                    placeholder="e.g. Thompson"
+                    value={formData.lastName}
+                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                  />
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-2">
-              <label className="block text-sm font-bold text-stone-600 ml-1">Schedule Type</label>
-              <div className="relative">
-                <select
-                  className="ghibli-input w-full bg-white/90 appearance-none"
-                  value={formData.enrollmentStatus}
-                  onChange={e => setFormData({ ...formData, enrollmentStatus: e.target.value })}
-                >
-                  <option>Full Time</option>
-                  <option>Part Time</option>
-                </select>
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-stone-400">
-                  <Sparkles className="w-4 h-4" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="dob" className="flex items-center gap-2 text-stone-600 font-semibold">
+                    <Calendar className="w-4 h-4 text-sky-500" /> Date of Birth
+                  </Label>
+                  <Input
+                    id="dob"
+                    type="date"
+                    required
+                    className="bg-stone-50 border-stone-200 focus:border-sky-400 focus:ring-sky-400/20 h-12"
+                    value={formData.dob}
+                    onChange={(e) => setFormData({ ...formData, dob: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="gradeLevel" className="flex items-center gap-2 text-stone-600 font-semibold">
+                    <GraduationCap className="w-4 h-4 text-amber-500" /> Grade Level
+                  </Label>
+                  <Select
+                    value={formData.gradeLevel}
+                    onValueChange={(value) => setFormData({ ...formData, gradeLevel: value })}
+                  >
+                    <SelectTrigger className="bg-stone-50 border-stone-200 focus:border-amber-400 focus:ring-amber-400/20 h-12">
+                      <SelectValue placeholder="Select Grade" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Infant">Infant (0-12 mo)</SelectItem>
+                      <SelectItem value="Toddler">Toddler (1-2 yr)</SelectItem>
+                      <SelectItem value="Preschool">Preschool (3-4 yr)</SelectItem>
+                      <SelectItem value="Pre-K">Pre-K (4-5 yr)</SelectItem>
+                      <SelectItem value="Kindergarten">Kindergarten</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
-            </div>
-            <div className="space-y-2">
-              <label className="block text-sm font-bold text-stone-600 ml-1">Parent Email</label>
-              <input
-                required
-                type="email"
-                className={`ghibli-input w-full ${errors.email ? 'border-rose-400 focus:ring-rose-400' : ''}`}
-                placeholder="parent@example.com"
-                value={formData.parentEmail}
-                onChange={e => setFormData({ ...formData, parentEmail: e.target.value })}
-                onBlur={handleEmailBlur}
-              />
-              {errors.email && (
-                <p className="text-rose-500 text-sm font-semibold ml-1 flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" />
-                  {errors.email}
-                </p>
-              )}
-            </div>
-          </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-bold text-stone-600 ml-1">Allergies & Medical Notes</label>
-            <textarea
-              className="ghibli-input w-full h-32 resize-none"
-              placeholder="Any special needs or magic spells we should know about?"
-              value={formData.allergies}
-              onChange={e => setFormData({ ...formData, allergies: e.target.value })}
-            ></textarea>
-          </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="enrollmentType" className="flex items-center gap-2 text-stone-600 font-semibold">
+                    <Clock className="w-4 h-4 text-violet-500" /> Enrollment Type
+                  </Label>
+                  <Select
+                    value={formData.enrollmentType}
+                    onValueChange={(value) => setFormData({ ...formData, enrollmentType: value })}
+                  >
+                    <SelectTrigger className="bg-stone-50 border-stone-200 focus:border-violet-400 focus:ring-violet-400/20 h-12">
+                      <SelectValue placeholder="Select Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Full Time">Full Time</SelectItem>
+                      <SelectItem value="Part Time">Part Time</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="emergencyContact" className="flex items-center gap-2 text-stone-600 font-semibold">
+                    <Phone className="w-4 h-4 text-rose-500" /> Emergency Contact
+                  </Label>
+                  <Input
+                    id="emergencyContact"
+                    type="tel"
+                    required
+                    placeholder="(555) 123-4567"
+                    className="bg-stone-50 border-stone-200 focus:border-rose-400 focus:ring-rose-400/20 h-12"
+                    value={formData.emergencyContact}
+                    onChange={(e) => setFormData({ ...formData, emergencyContact: e.target.value })}
+                  />
+                </div>
+              </div>
 
-          <div className="pt-8 flex items-center justify-end gap-4 border-t border-stone-100">
-            <button
-              type="button"
-              onClick={onCancel}
-              disabled={submitting}
-              className="px-8 py-3 rounded-full text-stone-500 font-bold hover:bg-stone-100 transition-colors disabled:opacity-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={submitting || submitSuccess}
-              className="ghibli-btn px-10 py-3 bg-sky-500 text-white font-bold shadow-lg shadow-sky-200 hover:bg-sky-600 hover:shadow-sky-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              {submitting ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Registering...
-                </>
-              ) : submitSuccess ? (
-                <>
-                  <CheckCircle className="w-5 h-5" />
-                  Registered!
-                </>
-              ) : (
-                'Welcome Child'
+              <div className="space-y-2">
+                <Label htmlFor="medication" className="flex items-center gap-2 text-stone-600 font-semibold">
+                  <Pill className="w-4 h-4 text-violet-500" /> Medication (if any)
+                </Label>
+                <Textarea
+                  id="medication"
+                  placeholder="Please list any medications your child is currently taking, or write 'None'."
+                  className="bg-stone-50 border-stone-200 focus:border-violet-400 focus:ring-violet-400/20 min-h-[100px]"
+                  value={formData.medication}
+                  onChange={(e) => setFormData({ ...formData, medication: e.target.value })}
+                />
+              </div>
+
+              {error && (
+                <div className="bg-rose-50 border border-rose-200 text-rose-600 p-4 rounded-xl flex items-center gap-2">
+                  <Shield className="w-5 h-5 shrink-0" />
+                  <p className="text-sm font-medium">{error}</p>
+                </div>
               )}
-            </button>
-          </div>
-        </form>
+
+              <Button
+                type="submit"
+                className="w-full h-14 text-lg font-bold bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-200 rounded-xl transition-all hover:-translate-y-1"
+                disabled={loading}
+              >
+                {loading ? 'Registering...' : 'Complete Registration'}
+              </Button>
+
+              {onCancel && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={onCancel}
+                  className="w-full h-12 text-stone-500 font-medium hover:bg-stone-100 mt-2"
+                >
+                  Cancel
+                </Button>
+              )}
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

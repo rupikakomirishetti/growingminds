@@ -36,7 +36,7 @@ const Dashboard: React.FC<DashboardProps> = ({ childrenData, activities }) => {
         {/* Child Profile Card */}
         {childrenData.map(child => (
           <div key={child.id} className="ghibli-card overflow-hidden group border-0">
-             <div className="h-32 bg-gradient-to-r from-sky-200 to-indigo-200 relative">
+             <div className="h-32 bg-linear-to-r from-sky-200 to-indigo-200 relative">
                <div className="absolute -bottom-12 left-8">
                  <img src={child.photoUrl} alt={child.firstName} className="w-24 h-24 rounded-full border-4 border-white shadow-md object-cover" />
                </div>
@@ -105,7 +105,7 @@ const Dashboard: React.FC<DashboardProps> = ({ childrenData, activities }) => {
         <div className="space-y-4">
           {recentActivities.map((activity) => (
              <div key={activity.id} className="flex gap-6 p-4 rounded-2xl hover:bg-stone-50 transition-colors group">
-               <div className="flex-shrink-0 mt-2">
+               <div className="shrink-0 mt-2">
                  <div className="w-10 h-10 rounded-full bg-white border border-stone-100 shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform text-stone-500">
                     {activity.type === ActivityType.MEAL && <Utensils className="w-4 h-4 text-orange-400" />}
                     {activity.type === ActivityType.NAP && <Moon className="w-4 h-4 text-indigo-400" />}
