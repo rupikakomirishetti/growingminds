@@ -29,6 +29,8 @@ const Navbar: React.FC<NavbarProps> = ({ onSelect }) => {
             <Baby className="w-6 h-6" />
           </div>
           <span className="text-2xl font-bold text-emerald-900 tracking-tight font-patrick whitespace-nowrap">GrowingMinds</span>
+          {/* <span className="text-2xl font-bold text-emerald-900 tracking-tight font-patrick whitespace-nowrap">GrowingMinds</span> */}
+          {/* Growing <span className="text-purple-500 italic drop-shadow-sm">Minds</span> */}
         </div>
 
         <div className="flex items-center gap-4">

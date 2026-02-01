@@ -2,6 +2,7 @@
 import React from 'react';
 import { Sparkles, Cloud, Sun, Heart, Shield, Zap, Stethoscope, Award } from 'lucide-react';
 import Navbar from './Navbar';
+import HeroCarousel from './HeroCarousel';
 import BentoGrid from './BentoGrid';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -14,48 +15,52 @@ interface LandingPageProps {
 const LandingPage: React.FC<LandingPageProps> = ({ onSelect }) => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center relative overflow-hidden font-quicksand">
-      {/* Hero Background Container */}
-      <div className="relative w-full min-h-screen flex flex-col items-center">
-        {/* Full Screen Background Image */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/hero.jpg"
-            alt="Warm and inviting daycare classroom"
-            fill
-            className="object-cover"
-            priority
-          />
-          {/* Soft gradient overlay for readability and premium feel */}
-          <div className="absolute inset-0 bg-linear-to-b from-white/40 via-white/10 to-sky-50/80 backdrop-blur-[1px]" />
-        </div>
+      {/* Background Decoration */}
+      <div className="absolute top-0 left-0 w-full h-[1000px] bg-[radial-gradient(circle_at_50%_0%,rgba(168,85,247,0.1)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-sky-200/20 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute top-[40%] left-[-10%] w-[400px] h-[400px] bg-emerald-100/30 blur-[100px] rounded-full pointer-events-none" />
 
-        <Navbar onSelect={onSelect} />
+      <Navbar onSelect={onSelect} />
 
-        {/* Hero Section */}
-        <section className="mt-48 w-full relative z-10 text-center flex flex-col items-center justify-center pt-32 md:pt-48 pb-20 px-6">
-          <div className="animate-fade-in space-y-8">
-            <div className="space-y-4">
-              <p className="text-5xl text-shadow-gray-600 font-bold max-w-2xl mx-auto leading-relaxed">
-                A gentle bridge between busy parents and their little adventurers. Captured moments, growth, and peaceful community.
-              </p>
-            </div>
-
-            <div className="mt-18 flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
-              <Button
-                variant="default"
-                size="lg"
-                className="bg-purple-500/90 w-full sm:w-auto px-12 py-7 text-xl shadow-xl hover:shadow-primary/20 transition-all hover:-translate-y-1"
-                onClick={() => window.scrollTo({ top: document.getElementById('bento-grid')?.offsetTop, behavior: 'smooth' })}
-              >
-                Learn More
-              </Button>
-            </div>
+      {/* Hero Section */}
+      <section className="relative z-10 w-full max-w-7xl mx-auto pt-40 md:pt-56 pb-20 px-6 text-center">
+        <div className="animate-fade-in space-y-16">
+          <div className="space-y-8">
+            <h1 className="text-6xl md:text-8xl font-bold font-patrick text-emerald-900 tracking-tight">
+              Growing <span className="text-purple-500 italic drop-shadow-sm">Minds</span>
+            </h1>
+            <p className="text-xl md:text-3xl text-stone-600 font-medium max-w-4xl mx-auto leading-relaxed">
+              A gentle bridge between busy parents and their little adventurers. Captured moments, growth, and peaceful community.
+            </p>
           </div>
-        </section>
-      </div>
+
+          {/* Interactive Slideshow */}
+          <div className="px-4">
+            <HeroCarousel />
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
+            <Button
+              variant="default"
+              size="lg"
+              className="bg-purple-500 px-12 py-8 text-xl shadow-2xl shadow-purple-200/50 hover:shadow-purple-300/60 transition-all hover:-translate-y-1 rounded-2xl"
+              onClick={() => {
+                const bentoGrid = document.getElementById('bento-grid');
+                if (bentoGrid) {
+                  window.scrollTo({ top: bentoGrid.offsetTop - 100, behavior: 'smooth' });
+                }
+              }}
+            >
+              Explore Our World
+            </Button>
+          </div>
+        </div>
+      </section>
 
       {/* Bento Grid Section */}
-      <BentoGrid />
+      <div id="bento-grid" className="w-full">
+        <BentoGrid />
+      </div>
 
       {/* Features Grid */}
       <section className="w-full max-w-6xl px-6 py-20 relative z-10">
@@ -65,7 +70,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onSelect }) => {
             title="Safe & Secure"
             description="A secure, monitored environment where children can explore and grow with confidence."
           />
-          
+
           <FeatureCard
             icon={<Stethoscope className="w-8 h-8 text-emerald-400" />}
             title="CPR & First Aid Certified"
