@@ -5,14 +5,14 @@ import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const images = [
+    '/images/hero_carousel/IMG_2472.jpg',
+    '/images/hero_carousel/IMG_2494.jpg',
     '/images/hero_carousel/IMG_5982.jpg',
     '/images/hero_carousel/IMG_5983.jpg',
     '/images/hero_carousel/IMG_5984.jpg',
     '/images/hero_carousel/IMG_5985.jpg',
-    '/images/hero_carousel/IMG_5986.jpg',
     '/images/hero_carousel/IMG_5987.jpg',
     '/images/hero_carousel/IMG_5988.jpg',
-    '/images/hero_carousel/IMG_5990.jpg',
     '/images/hero_carousel/IMG_5991.jpg',
 ];
 
@@ -87,8 +87,8 @@ const HeroCarousel = () => {
                         key={index}
                         onClick={() => setCurrentIndex(index)}
                         className={`w-2.5 h-2.5 rounded-full transition-all ${index === currentIndex
-                                ? 'bg-white w-8'
-                                : 'bg-white/40 hover:bg-white/60'
+                            ? 'bg-white w-8'
+                            : 'bg-white/40 hover:bg-white/60'
                             }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />
